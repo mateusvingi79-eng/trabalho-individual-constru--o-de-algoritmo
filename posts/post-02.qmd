@@ -1,8 +1,8 @@
 ---
-title: "Exemplo de Post 02"
-author: "Seu Nome"
+title: "Frota de onibus"
+author: "Mateus correa vingi"
 date: "2025-11-23"
-categories: ["exemplo", "lacospython"]
+categories: ["API", "python"]
 format:
   html:
     toc: true
@@ -15,7 +15,6 @@ lang: pt-BR
 ---
 
 # Laços de Repetição em Python
-
 **Autor:** {{< meta author >}}  
 **Data:** {{< meta date >}}
 
@@ -23,33 +22,313 @@ lang: pt-BR
 
 ## Descrição da Atividade
 
-Implementar laços de repetição com `for` e `while` em Python para percorrer listas e controlar contadores.
+Atividade da frota de onibus com a API do olho vivo.
 
 ## Código da Solução
 
 ### Exemplo com `for`
 
 ```python
-numeros = [1, 2, 3, 4, 5]
+import requests
+import folium
+from folium import plugins
+import pandas as pd
+from datetime import datetime
 
-for n in numeros:
-    print(f"Número: {n}")
-```
+class MonitoramentoOnibus:
+    """
+    Classe para monitorar em tempo real a frota de ônibus de São Paulo.
+    Utiliza a API SPTrans (Olho Vivo) para obter dados de paradas e posições.
+    """
+    
+    def __init__(self, token):
+        """
+        Inicializa o monitor com o token de autenticação.
+        
+        Parâmetros:
+        token (str): Token de autenticação da API SPTrans
+        """
+        self.token = token
+        self.base_url = "http://api.olhovivo.sptrans.com.br/v2.1"
+        self.session = requests.Session()
+        self.autenticado = False
+        
+    def autenticar(self):
+        """
+        Realiza a autenticação na API SPTrans.
+        
+        Retorna:
+        bool: True se autenticado com sucesso, False caso contrário
+        """
+        url = f"{self.base_url}/Login/Autenticar?token={self.token}"
+        
+        try:
+            response = self.session.post(url)
+            
+            if response.status_code == 200 and response.text == 'true':
+                self.autenticado = True
+                print("✓ Autenticação realizada com sucesso!")
+                return True
+            else:
+                print(f"✗ Falha na autenticação. Status: {response.status_code}")
+                return False
+                
+        except Exception as e:
+            print(f"✗ Erro ao autenticar: {e}")
+            return False
+    
+    def buscar_linhas(self, termo_busca):
+        """
+        Busca linhas de ônibus por termo.
+        
+        Parâmetros:
+        termo_busca (str): Termo para buscar (número ou nome da linha)
+        
+        Retorna:
+        list: Lista de linhas encontradas
+        """
+        if not self.autenticado:
+            print("Erro: Necessário autenticar primeiro!")
+            return None
+        
+        url = f"{self.base_url}/Linha/Buscar?termosBusca={termo_busca}"
+        
+        try:
+            response = self.session.get(url)
+            
+            if response.status_code == 200:
+                linhas = response.json()
+                print(f"\n✓ Encontradas {len(linhas)} linhas com o termo '{termo_busca}'")
+                
+                for i, linha in enumerate(linhas[:10], 1):  # Mostrar no máximo 10
+                    print(f"  {i}. Código: {linha['cl']} | Linha: {linha['lc']} | Sentido: {linha['sl']}")
+                
+                return linhas
+            else:
+                print(f"✗ Erro ao buscar linhas. Status: {response.status_code}")
+                return None
+                
+        except Exception as e:
+            print(f"✗ Erro ao buscar linhas: {e}")
+            return None
+    
+    def obter_paradas_linha(self, codigo_linha):
+        """
+        Obtém todas as paradas de uma linha específica.
+        
+        Parâmetros:
+        codigo_linha (int): Código da linha
+        
+        Retorna:
+        list: Lista de paradas da linha
+        """
+        if not self.autenticado:
+            print("Erro: Necessário autenticar primeiro!")
+            return None
+        
+        url = f"{self.base_url}/Parada/BuscarParadasPorLinha?codigoLinha={codigo_linha}"
+        
+        try:
+            response = self.session.get(url)
+            
+            if response.status_code == 200:
+                paradas = response.json()
+                print(f"\n✓ Encontradas {len(paradas)} paradas para a linha")
+                return paradas
+            else:
+                print(f"✗ Erro ao obter paradas. Status: {response.status_code}")
+                return None
+                
+        except Exception as e:
+            print(f"✗ Erro ao obter paradas: {e}")
+            return None
+    
+    def obter_posicoes_linha(self, codigo_linha):
+        """
+        Obtém as posições em tempo real dos ônibus de uma linha.
+        
+        Parâmetros:
+        codigo_linha (int): Código da linha
+        
+        Retorna:
+        dict: Dicionário com informações dos veículos
+        """
+        if not self.autenticado:
+            print("Erro: Necessário autenticar primeiro!")
+            return None
+        
+        url = f"{self.base_url}/Posicao/Linha?codigoLinha={codigo_linha}"
+        
+        try:
+            response = self.session.get(url)
+            
+            if response.status_code == 200:
+                dados = response.json()
+                
+                if 'vs' in dados:
+                    veiculos = dados['vs']
+                    print(f"\n✓ Encontrados {len(veiculos)} veículos em operação")
+                    return dados
+                else:
+                    print("✗ Nenhum veículo em operação no momento")
+                    return None
+            else:
+                print(f"✗ Erro ao obter posições. Status: {response.status_code}")
+                return None
+                
+        except Exception as e:
+            print(f"✗ Erro ao obter posições: {e}")
+            return None
+    
+    def criar_mapa(self, codigo_linha, nome_linha="Linha de Ônibus"):
+        """
+        Cria um mapa interativo com paradas e posições em tempo real.
+        
+        Parâmetros:
+        codigo_linha (int): Código da linha
+        nome_linha (str): Nome/descrição da linha
+        
+        Retorna:
+        folium.Map: Mapa com as informações plotadas
+        """
+        print(f"\n{'='*60}")
+        print(f"Criando mapa para: {nome_linha}")
+        print(f"{'='*60}")
+        
+        # Obter paradas
+        paradas = self.obter_paradas_linha(codigo_linha)
+        
+        if not paradas:
+            print("✗ Não foi possível obter as paradas")
+            return None
+        
+        # Obter posições dos veículos
+        posicoes = self.obter_posicoes_linha(codigo_linha)
+        
+        # Calcular centro do mapa (média das coordenadas das paradas)
+        lats = [p['py'] for p in paradas]
+        lons = [p['px'] for p in paradas]
+        centro_lat = sum(lats) / len(lats)
+        centro_lon = sum(lons) / len(lons)
+        
+        # Criar mapa
+        mapa = folium.Map(
+            location=[centro_lat, centro_lon],
+            zoom_start=13,
+            tiles='OpenStreetMap'
+        )
+        
+        # Adicionar paradas (pins azuis)
+        for parada in paradas:
+            folium.Marker(
+                location=[parada['py'], parada['px']],
+                popup=f"""
+                    <b>Parada: {parada['np']}</b><br>
+                    Endereço: {parada['ed']}<br>
+                    Código: {parada['cp']}
+                """,
+                tooltip=f"Parada: {parada['np']}",
+                icon=folium.Icon(color='blue', icon='stop', prefix='fa')
+            ).add_to(mapa)
+        
+        # Adicionar posições em tempo real (pins vermelhos)
+        if posicoes and 'vs' in posicoes:
+            for veiculo in posicoes['vs']:
+                hora_atualizacao = datetime.strptime(veiculo['hr'], '%H:%M')
+                
+                folium.Marker(
+                    location=[veiculo['py'], veiculo['px']],
+                    popup=f"""
+                        <b>🚌 Ônibus em Tempo Real</b><br>
+                        Prefixo: {veiculo['p']}<br>
+                        Última atualização: {veiculo['hr']}<br>
+                        Acessível: {'Sim' if veiculo.get('a', False) else 'Não'}
+                    """,
+                    tooltip=f"🚌 Ônibus {veiculo['p']} - {veiculo['hr']}",
+                    icon=folium.Icon(color='red', icon='bus', prefix='fa')
+                ).add_to(mapa)
+        
+        # Adicionar legenda
+        legenda_html = '''
+        <div style="position: fixed; 
+                    bottom: 50px; left: 50px; width: 200px; height: 90px; 
+                    background-color: white; border:2px solid grey; z-index:9999; 
+                    font-size:14px; padding: 10px">
+        <b>Legenda:</b><br>
+        <i class="fa fa-stop" style="color:blue"></i> Paradas<br>
+        <i class="fa fa-bus" style="color:red"></i> Ônibus em Tempo Real
+        </div>
+        '''
+        mapa.get_root().html.add_child(folium.Element(legenda_html))
+        
+        # Adicionar título
+        titulo_html = f'''
+        <div style="position: fixed; 
+                    top: 10px; left: 50%; transform: translateX(-50%);
+                    background-color: white; border:2px solid grey; z-index:9999; 
+                    font-size:16px; padding: 10px; border-radius: 5px;">
+        <b>Monitoramento de Frota - {nome_linha}</b><br>
+        <small>Atualizado em: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}</small>
+        </div>
+        '''
+        mapa.get_root().html.add_child(folium.Element(titulo_html))
+        
+        print(f"\n✓ Mapa criado com sucesso!")
+        print(f"  - Total de paradas: {len(paradas)}")
+        if posicoes and 'vs' in posicoes:
+            print(f"  - Veículos em operação: {len(posicoes['vs'])}")
+        else:
+            print(f"  - Nenhum veículo em operação no momento")
+        
+        return mapa
 
-### Exemplo com `while`
 
-```python
-contador = 1
-
-while contador <= 5:
-    print(f"Contador: {contador}")
-    contador += 1
+# Exemplo de uso
+if __name__ == "__main__":
+    print("="*60)
+    print("MONITORAMENTO DE FROTA DE ÔNIBUS - SÃO PAULO")
+    print("="*60)
+    
+    # PASSO 1: Inserir seu token da API SPTrans
+    # Para obter o token, acesse: https://www.sptrans.com.br/desenvolvedores/
+    TOKEN = "84060339d75cd059b4be7ad72216f9755b323b948c4b017ee269e2c2df87ec45"
+    
+    # PASSO 2: Criar instância do monitor
+    monitor = MonitoramentoOnibus(TOKEN)
+    
+    # PASSO 3: Autenticar
+    if monitor.autenticar():
+        
+        # PASSO 4: Buscar linhas (exemplo: linha 856R-10)
+        termo = "856R"  # Altere para a linha desejada
+        linhas = monitor.buscar_linhas(termo)
+        
+        if linhas and len(linhas) > 0:
+            # Usar a primeira linha encontrada
+            linha_selecionada = linhas[0]
+            codigo_linha = linha_selecionada['cl']
+            nome_linha = f"{linha_selecionada['lc']} - {linha_selecionada['sl']}"
+            
+            print(f"\n{'='*60}")
+            print(f"Linha selecionada: {nome_linha}")
+            print(f"Código: {codigo_linha}")
+            print(f"{'='*60}")
+            
+            # PASSO 5: Criar mapa
+            mapa = monitor.criar_mapa(codigo_linha, nome_linha)
+            
+            if mapa:
+                # PASSO 6: Salvar mapa
+                nome_arquivo = f"mapa_onibus_{codigo_linha}.html"
+                mapa.save(nome_arquivo)
+                print(f"\n✓ Mapa salvo como: {nome_arquivo}")
+                print(f"✓ Abra o arquivo no navegador para visualizar!")
+    
+    print("\n" + "="*60)
+    print("FIM DO PROCESSAMENTO")
+    print("="*60)
 ```
 
 ## Comentários do Autor
 
-Neste post, explorei o uso de laços `for` e `while`.
-
-- O `for` é mais simples para percorrer listas já definidas.
-- O `while` é útil quando não sabemos exatamente quantas repetições teremos.
-- No futuro, posso adicionar exemplos com `break` e `continue` para controlar melhor o fluxo.
+Passo a passo está nas linhas finais do codigo

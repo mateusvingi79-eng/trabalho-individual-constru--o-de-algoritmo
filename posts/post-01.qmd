@@ -1,6 +1,6 @@
 ---
-title: "Exemplo de Post 01"
-author: "Seu Nome"
+title: "cotação do dolar"
+author: "Mateus correa vingi"
 date: "2025-11-23"
 categories: ["exemplo", "condicionais"]
 format:
@@ -28,18 +28,221 @@ Implementar exemplos de estruturas condicionais (`if`, `elif`, `else`) em Python
 ## Código da Solução
 
 ```python
-nota = float(input("Digite a nota do aluno: "))
+import requests
+import pandas as pd
+import plotly.graph_objects as go
+import calendar
+from datetime import datetime, timedelta
+import openpyxl
 
-if nota >= 9.0:
-    conceito = "A"
-elif nota >= 7.0:
-    conceito = "B"
-elif nota >= 5.0:
-    conceito = "C"
-else:
-    conceito = "D"
+def obter_cotacao_dolar(periodo):
+    """
+    Obtém a cotação do dólar para um período específico (MMYYYY)
+    e gera um gráfico de linha com os valores.
+    
+    Parâmetros:
+    periodo (str): String no formato "MMYYYY" (ex: "082021")
+    
+    Retorna:
+    plotly.graph_objects.Figure: Gráfico com as cotações do período
+    """
+    
+    # Converter o período para datetime
+    first_date = datetime.strptime(periodo, "%m%Y")
+    
+    # Obter o último dia do mês
+    last_day = calendar.monthrange(first_date.year, first_date.month)[1]
+    last_date = first_date.replace(day=last_day)
+    
+    # Formatar datas para a API (formato MM-DD-YYYY)
+    data_inicial = first_date.strftime("%m-%d-%Y")
+    data_final = last_date.strftime("%m-%d-%Y")
+    
+    # URL da API do Banco Central
+    url = f"https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial='{data_inicial}'&@dataFinalCotacao='{data_final}'&$top=100&$format=json"
+    
+    print(f"Consultando cotações de {first_date.strftime('%B/%Y')}...")
+    print(f"Período: {data_inicial} até {data_final}")
+    
+    try:
+        # Fazer requisição à API
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Extrair dados
+        data = response.json()
+        cotacoes = data['value']
+        
+        if not cotacoes:
+            print("Nenhuma cotação encontrada para o período.")
+            return None
+        
+        # Criar DataFrame
+        df = pd.DataFrame(cotacoes)
+        df['dataHoraCotacao'] = pd.to_datetime(df['dataHoraCotacao'])
+        df = df.sort_values('dataHoraCotacao')
+        
+        # Preencher dias sem cotação (finais de semana e feriados)
+        # Criar range completo de datas
+        date_range = pd.date_range(start=first_date, end=last_date, freq='D')
+        df_completo = pd.DataFrame({'dataHoraCotacao': date_range})
+        
+        # Merge com as cotações existentes
+        df_completo = df_completo.merge(df[['dataHoraCotacao', 'cotacaoCompra', 'cotacaoVenda']], 
+                                        on='dataHoraCotacao', 
+                                        how='left')
+        
+        # Preencher valores faltantes com o último valor válido anterior (forward fill)
+        df_completo['cotacaoCompra'] = df_completo['cotacaoCompra'].fillna(method='ffill')
+        df_completo['cotacaoVenda'] = df_completo['cotacaoVenda'].fillna(method='ffill')
+        
+        # Criar gráfico
+        fig = go.Figure()
+        
+        # Adicionar linha de cotação de compra
+        fig.add_trace(go.Scatter(
+            x=df_completo['dataHoraCotacao'],
+            y=df_completo['cotacaoCompra'],
+            mode='lines+markers',
+            name='Cotação de Compra',
+            line=dict(color='green', width=2),
+            marker=dict(size=4)
+        ))
+        
+        # Adicionar linha de cotação de venda
+        fig.add_trace(go.Scatter(
+            x=df_completo['dataHoraCotacao'],
+            y=df_completo['cotacaoVenda'],
+            mode='lines+markers',
+            name='Cotação de Venda',
+            line=dict(color='red', width=2),
+            marker=dict(size=4)
+        ))
+        
+        # Configurar layout
+        fig.update_layout(
+            title=f'Cotação do Dólar - {first_date.strftime("%B/%Y").title()}',
+            xaxis_title='Data',
+            yaxis_title='Cotação (R$)',
+            hovermode='x unified',
+            template='plotly_white',
+            legend=dict(
+                yanchor="top",
+                y=0.99,
+                xanchor="left",
+                x=0.01
+            )
+        )
+        
+        # Informações estatísticas
+        print(f"\n{'='*50}")
+        print(f"Estatísticas do Período:")
+        print(f"{'='*50}")
+        print(f"Cotação Compra - Média: R$ {df_completo['cotacaoCompra'].mean():.4f}")
+        print(f"Cotação Compra - Mínima: R$ {df_completo['cotacaoCompra'].min():.4f}")
+        print(f"Cotação Compra - Máxima: R$ {df_completo['cotacaoCompra'].max():.4f}")
+        print(f"\nCotação Venda - Média: R$ {df_completo['cotacaoVenda'].mean():.4f}")
+        print(f"Cotação Venda - Mínima: R$ {df_completo['cotacaoVenda'].min():.4f}")
+        print(f"Cotação Venda - Máxima: R$ {df_completo['cotacaoVenda'].max():.4f}")
+        print(f"{'='*50}\n")
+        
+        return fig
+    
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao acessar a API: {e}")
+        return None
+    except Exception as e:
+        print(f"Erro ao processar dados: {e}")
+        return None
 
-print(f"Nota: {nota} - Conceito: {conceito}")
+
+def processar_planilha_alunos(caminho_excel):
+    """
+    Lê a planilha Excel com os dados dos alunos e processa as cotações.
+    
+    Parâmetros:
+    caminho_excel (str): Caminho para o arquivo Excel (ex: "Dolar.xlsx")
+    
+    Retorna:
+    dict: Dicionário com os alunos e seus respectivos gráficos
+    """
+    try:
+        # Ler planilha Excel
+        df_alunos = pd.read_excel(caminho_excel)
+        
+        # Assumindo que as colunas são: A (RA), B (MES), C (ANO)
+        # Ajuste os nomes das colunas conforme necessário
+        print(f"Colunas encontradas: {df_alunos.columns.tolist()}\n")
+        
+        resultados = {}
+        
+        for index, row in df_alunos.iterrows():
+            ra = row.iloc[0]  # Primeira coluna (RA ou identificador)
+            mes = str(row.iloc[1]).zfill(2)  # Segunda coluna (MÊS) - garantir 2 dígitos
+            ano = str(row.iloc[2])  # Terceira coluna (ANO)
+            
+            # Criar período no formato MMYYYY
+            periodo = f"{mes}{ano}"
+            
+            print(f"\n{'='*60}")
+            print(f"Processando: RA/Aluno: {ra} - Período: {mes}/{ano}")
+            print(f"{'='*60}")
+            
+            # Obter cotação e gerar gráfico
+            fig = obter_cotacao_dolar(periodo)
+            
+            if fig:
+                resultados[ra] = {
+                    'periodo': periodo,
+                    'mes': mes,
+                    'ano': ano,
+                    'grafico': fig
+                }
+                
+                # Salvar gráfico como HTML
+                nome_arquivo = f"cotacao_dolar_{ra}_{mes}_{ano}.html"
+                fig.write_html(nome_arquivo)
+                print(f"✓ Gráfico salvo em: {nome_arquivo}")
+            else:
+                print(f"✗ Erro ao processar período {mes}/{ano} para {ra}")
+        
+        print(f"\n{'='*60}")
+        print(f"Processamento concluído! Total de gráficos gerados: {len(resultados)}")
+        print(f"{'='*60}\n")
+        
+        return resultados
+    
+    except FileNotFoundError:
+        print(f"Erro: Arquivo '{caminho_excel}' não encontrado.")
+        return None
+    except Exception as e:
+        print(f"Erro ao processar planilha: {e}")
+        return None
+
+
+# Exemplo de uso
+if __name__ == "__main__":
+    
+    # OPÇÃO 1: Processar um período específico manualmente
+    print("="*60)
+    print("OPÇÃO 1: Processamento Manual")
+    print("="*60)
+    periodo = "082021"  # Agosto de 2021
+    fig = obter_cotacao_dolar(periodo)
+    if fig:
+        fig.show()
+    
+    print("\n" + "="*60)
+    print("OPÇÃO 2: Processar Planilha de Alunos")
+    print("="*60)
+    
+    # OPÇÃO 2: Processar planilha Excel com todos os alunos
+    # Descomente a linha abaixo e coloque o caminho correto do arquivo
+    # resultados = processar_planilha_alunos("Dolar.xlsx")
+    
+    # Para visualizar um gráfico específico de um aluno:
+    # if resultados and '2E+05' in resultados:
+    #     resultados['2E+05']['grafico'].show()
 ```
 
 ## Comentários do Autor
