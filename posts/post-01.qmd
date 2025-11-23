@@ -23,7 +23,7 @@ lang: pt-BR
 
 ## Descrição da Atividade
 
-Implementar exemplos de estruturas condicionais (`if`, `elif`, `else`) em Python para verificar diferentes faixas de notas de um aluno.
+Cotação do dolar 
 
 ## Código da Solução
 
@@ -247,8 +247,4 @@ if __name__ == "__main__":
 
 ## Comentários do Autor
 
-Nesta atividade, trabalhei com estruturas condicionais simples em Python.
-
-- Testei diferentes valores de notas para garantir que todas as faixas fossem cobertas.
-- Tive atenção especial às condições limítrofes (por exemplo, 7.0, 9.0).
-- Poderia estender o código futuramente para validar entradas inválidas (como letras ou valores negativos).
+começo no dia 19 e teermino no dia 23

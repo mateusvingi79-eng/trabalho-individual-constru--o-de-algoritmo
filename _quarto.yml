@@ -21,8 +21,8 @@ website:
     foreground: "#E5E7EB"
     center:
       - text: "© 2025 - Blog de Programação | Desenvolvido com Quarto"
-      - text: "Autor: Seu Nome | GitHub: github.com/seuusuario"
-        href: "https://github.com/seuusuario"
+      - text: "Autor: Mateus correa vingi | GitHub: github.com/mateusvingi79-eng"
+        href: "https://github.com/mateusvingi79-eng"
 
 format:
   html:
