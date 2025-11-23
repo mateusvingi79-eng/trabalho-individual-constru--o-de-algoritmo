@@ -18,9 +18,9 @@ Aqui você encontrará códigos, explicações e comentários sobre cada ativida
 ::: {.posts-grid}
 
 :::{.post-card}
-### Exemplo de Post 01
+### Atividade cotação do dolar
 
-**Data:** 2025-11-23 · **Autor:** Seu Nome
+**Data:** 2025-11-23 · **Autor:** Mateus correa vingi
 
 Pequena descrição da atividade abordando estruturas condicionais em Python.
 
@@ -28,13 +28,24 @@ Pequena descrição da atividade abordando estruturas condicionais em Python.
 :::
 
 :::{.post-card}
-### Exemplo de Post 02
+### Frota de onibus
 
-**Data:** 2025-11-23 · **Autor:** Seu Nome
+**Data:** 2025-11-23 · **Autor:** Mateus correa vingi
 
 Implementação de laços de repetição e exemplos práticos.
 
 [→ Ler mais](posts/post-02.qmd)
 :::
 
+:::{.post-card}
+### Regresssão linear
+
+**Data:** 2025-11-23 · **Autor:** Mateus correa vingi
+
+Implementação de laços de repetição e exemplos práticos.
+
+[→ Ler mais](posts/post-03.qmd)
 :::
+
+:::
+

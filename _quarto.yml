@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: _site
+  output-dir: docs
 
 website:
   title: "Blog de Programação"
@@ -35,4 +35,4 @@ format:
 
 metadata:
   lang: pt-BR
-  author: "Seu Nome"
+  author: "Mateus correa vingi"

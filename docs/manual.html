@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Seu Nome">
+<meta name="author" content="Mateus correa vingi">
 
-<title>Novo Post – Blog de Programação</title>
+<title>Manual do Usuário do Blog – Blog de Programação</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -131,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./novo-post.html" aria-current="page"> 
+    <a class="nav-link" href="./novo-post.html"> 
 <span class="menu-text">Novo Post</span></a>
   </li>  
   <li class="nav-item">
@@ -139,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span class="menu-text">Sobre</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./manual.html"> 
+    <a class="nav-link active" href="./manual.html" aria-current="page"> 
 <span class="menu-text">Manual</span></a>
   </li>  
 </ul>
@@ -158,7 +158,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Nesta página</h2>
    
   <ul>
-  <li><a href="#criar-novo-post" id="toc-criar-novo-post" class="nav-link active" data-scroll-target="#criar-novo-post">Criar Novo Post</a></li>
+  <li><a href="#manual-do-usuário-atualização-do-blog" id="toc-manual-do-usuário-atualização-do-blog" class="nav-link active" data-scroll-target="#manual-do-usuário-atualização-do-blog">Manual do Usuário – Atualização do Blog</a>
+  <ul class="collapse">
+  <li><a href="#estrutura-do-projeto" id="toc-estrutura-do-projeto" class="nav-link" data-scroll-target="#estrutura-do-projeto">1. Estrutura do Projeto</a></li>
+  <li><a href="#como-criar-um-novo-post" id="toc-como-criar-um-novo-post" class="nav-link" data-scroll-target="#como-criar-um-novo-post">2. Como Criar um Novo Post</a>
+  <ul class="collapse">
+  <li><a href="#copiar-o-template" id="toc-copiar-o-template" class="nav-link" data-scroll-target="#copiar-o-template">2.1. Copiar o Template</a></li>
+  <li><a href="#editar-o-cabeçalho-yaml" id="toc-editar-o-cabeçalho-yaml" class="nav-link" data-scroll-target="#editar-o-cabeçalho-yaml">2.2. Editar o Cabeçalho YAML</a></li>
+  <li><a href="#preencher-as-seções-do-post" id="toc-preencher-as-seções-do-post" class="nav-link" data-scroll-target="#preencher-as-seções-do-post">2.3. Preencher as Seções do Post</a></li>
+  <li><a href="#salvar-o-arquivo" id="toc-salvar-o-arquivo" class="nav-link" data-scroll-target="#salvar-o-arquivo">2.4. Salvar o Arquivo</a></li>
+  </ul></li>
+  <li><a href="#como-adicionar-o-post-na-página-inicial" id="toc-como-adicionar-o-post-na-página-inicial" class="nav-link" data-scroll-target="#como-adicionar-o-post-na-página-inicial">3. Como Adicionar o Post na Página Inicial</a></li>
+  <li><a href="#como-editar-um-post-existente" id="toc-como-editar-um-post-existente" class="nav-link" data-scroll-target="#como-editar-um-post-existente">4. Como Editar um Post Existente</a></li>
+  <li><a href="#visualizar-o-blog-localmente" id="toc-visualizar-o-blog-localmente" class="nav-link" data-scroll-target="#visualizar-o-blog-localmente">5. Visualizar o Blog Localmente</a></li>
+  <li><a href="#publicar-as-alterações-no-github" id="toc-publicar-as-alterações-no-github" class="nav-link" data-scroll-target="#publicar-as-alterações-no-github">6. Publicar as Alterações no GitHub</a></li>
+  <li><a href="#ajustar-apenas-o-visual-cores-e-layout" id="toc-ajustar-apenas-o-visual-cores-e-layout" class="nav-link" data-scroll-target="#ajustar-apenas-o-visual-cores-e-layout">7. Ajustar Apenas o Visual (Cores e Layout)</a></li>
+  <li><a href="#boas-práticas" id="toc-boas-práticas" class="nav-link" data-scroll-target="#boas-práticas">8. Boas Práticas</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -167,7 +183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Novo Post</h1>
+<h1 class="title">Manual do Usuário do Blog</h1>
 </div>
 
 
@@ -177,7 +193,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Autor</div>
     <div class="quarto-title-meta-contents">
-             <p>Seu Nome </p>
+             <p>Mateus correa vingi </p>
           </div>
   </div>
     
@@ -190,40 +206,210 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="criar-novo-post" class="level1">
-<h1>Criar Novo Post</h1>
-<p>Esta página descreve como criar um novo post para o blog. Preencha os campos abaixo (no seu editor) e salve como um novo arquivo em <code>posts/</code> usando o template <code>post-template.qmd</code>.</p>
-<div class="novo-post-form">
-<p><strong>1. Título do Post (obrigatório)</strong></p>
-<pre class="text"><code>Título: </code></pre>
-<p><strong>2. Autor</strong></p>
-<pre class="text"><code>Autor: </code></pre>
-<p><strong>3. Data</strong><br>
-Sugestão: use o formato <code>YYYY-MM-DD</code>.</p>
-<pre class="text"><code>Data: </code></pre>
-<p><strong>4. Descrição da Atividade</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="an">Descrição:</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Escreva aqui uma explicação geral da atividade, objetivos e contexto.</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>5. Código (em bloco markdown)</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">```linguagem</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="in"># Seu código aqui</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<pre><code>
-**6. Comentário do Autor (opcional)**
-
-```markdown
-Comentários do autor:
-Use este espaço para registrar reflexões pessoais, dificuldades, aprendizados e melhorias futuras.</code></pre>
-<p><strong>7. Como gerar o arquivo .qmd</strong></p>
+<section id="manual-do-usuário-atualização-do-blog" class="level1">
+<h1>Manual do Usuário – Atualização do Blog</h1>
+<p>Este manual explica como criar, editar e publicar posts no blog desenvolvido em Quarto.</p>
+<section id="estrutura-do-projeto" class="level2">
+<h2 class="anchored" data-anchor-id="estrutura-do-projeto">1. Estrutura do Projeto</h2>
+<ul>
+<li>Pasta raiz: <code>blogQuartoDev</code></li>
+<li>Arquivos principais:
+<ul>
+<li><code>_quarto.yml</code> – configuração geral do site (tema, menu, rodapé).</li>
+<li><code>index.qmd</code> – página inicial com os cards dos posts.</li>
+<li><code>novo-post.qmd</code> – instruções para criação de novos posts.</li>
+<li><code>sobre.qmd</code> – página “Sobre o Blog”.</li>
+<li><code>styles.css</code> – estilos (cores, fontes, layout).</li>
+</ul></li>
+<li>Pasta de posts:
+<ul>
+<li><code>posts/</code> – contém todos os posts do blog.</li>
+<li><code>posts/post-template.qmd</code> – modelo base para criar novos posts.</li>
+<li><code>posts/post-01.qmd</code>, <code>posts/post-02.qmd</code>, etc. – posts publicados.</li>
+</ul></li>
+</ul>
+</section>
+<section id="como-criar-um-novo-post" class="level2">
+<h2 class="anchored" data-anchor-id="como-criar-um-novo-post">2. Como Criar um Novo Post</h2>
+<section id="copiar-o-template" class="level3">
+<h3 class="anchored" data-anchor-id="copiar-o-template">2.1. Copiar o Template</h3>
 <ol type="1">
-<li>Copie o arquivo <code>post-template.qmd</code>.</li>
-<li>Renomeie para algo como <code>post-01.qmd</code>, <code>post-02.qmd</code> etc.</li>
-<li>Preencha o cabeçalho YAML e as seções indicadas.</li>
-<li>Salve o arquivo dentro da pasta <code>posts/</code>.</li>
-<li>Atualize o repositório com <code>git add</code>, <code>git commit</code> e <code>git push</code> para publicar no GitHub Pages.</li>
+<li>Acesse a pasta <code>posts/</code>.</li>
+<li>Duplique o arquivo <code>post-template.qmd</code>.</li>
+<li>Renomeie o novo arquivo, por exemplo:
+<ul>
+<li><code>post-03.qmd</code></li>
+<li><code>post-atividade-nota1.qmd</code></li>
+</ul></li>
 </ol>
-</div>
+</section>
+<section id="editar-o-cabeçalho-yaml" class="level3">
+<h3 class="anchored" data-anchor-id="editar-o-cabeçalho-yaml">2.2. Editar o Cabeçalho YAML</h3>
+<p>No início do arquivo, entre <code>---</code> e <code>---</code>, edite:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Título da Atividade"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Seu Nome"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span><span class="kw">:</span><span class="at"> </span><span class="st">"2025-11-23"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">categories</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"programacao"</span><span class="kw">,</span><span class="at"> </span><span class="st">"atividade"</span><span class="kw">]</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>title</code>: título da atividade.</li>
+<li><code>author</code>: nome do autor.</li>
+<li><code>date</code>: data no formato <code>YYYY-MM-DD</code>.</li>
+<li><code>categories</code>: categorias/palavras‑chave (opcional).</li>
+</ul>
+</section>
+<section id="preencher-as-seções-do-post" class="level3">
+<h3 class="anchored" data-anchor-id="preencher-as-seções-do-post">2.3. Preencher as Seções do Post</h3>
+<ul>
+<li><strong>Descrição da Atividade</strong>
+<ul>
+<li>Explique o contexto, objetivos e o que o código faz.</li>
+</ul></li>
+<li><strong>Código da Solução</strong>
+<ul>
+<li>Use blocos de código cercados (fenced code blocks):</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```python</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Seu código aqui</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> soma(a, b):</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Você pode usar outras linguagens, como <code>cpp</code>, <code>java</code>, <code>js</code>, etc.</li>
+</ul></li>
+<li><strong>Comentários do Autor</strong>
+<ul>
+<li>Use esse espaço para registrar:
+<ul>
+<li>Dificuldades encontradas.</li>
+<li>Erros e como foram corrigidos.</li>
+<li>Ideias de melhorias futuras.</li>
+</ul></li>
+<li>Esta área é <strong>apenas para o autor</strong>, não há comentários públicos.</li>
+</ul></li>
+</ul>
+</section>
+<section id="salvar-o-arquivo" class="level3">
+<h3 class="anchored" data-anchor-id="salvar-o-arquivo">2.4. Salvar o Arquivo</h3>
+<ul>
+<li>Mantenha o arquivo dentro da pasta <code>posts/</code>.</li>
+<li>Não é necessário alterar <code>_quarto.yml</code> para cada novo post.</li>
+</ul>
+</section>
+</section>
+<section id="como-adicionar-o-post-na-página-inicial" class="level2">
+<h2 class="anchored" data-anchor-id="como-adicionar-o-post-na-página-inicial">3. Como Adicionar o Post na Página Inicial</h2>
+<ol type="1">
+<li>Abra <code>index.qmd</code>.</li>
+<li>Localize o bloco de cards, por exemplo:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>::: {.posts-grid}</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>:::{.post-card}</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exemplo de Post 01</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>**Data:** 2025-11-23 · **Autor:** Seu Nome</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>Pequena descrição da atividade.</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">→ Ler mais</span><span class="co">](posts/post-01.qmd)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Copie um card existente e edite para o novo post, por exemplo:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>:::{.post-card}</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">### Título da Nova Atividade</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>**Data:** 2025-12-01 · **Autor:** Seu Nome</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>Pequeno resumo da atividade (2 a 3 linhas).</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">→ Ler mais</span><span class="co">](posts/post-03.qmd)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
+<li>Salve <code>index.qmd</code>. O novo card aparecerá na Home.</li>
+</ol>
+</section>
+<section id="como-editar-um-post-existente" class="level2">
+<h2 class="anchored" data-anchor-id="como-editar-um-post-existente">4. Como Editar um Post Existente</h2>
+<ol type="1">
+<li>Acesse a pasta <code>posts/</code>.</li>
+<li>Abra o arquivo do post desejado (por exemplo, <code>post-01.qmd</code>).</li>
+<li>Edite a descrição, o código ou a seção “Comentários do Autor”.</li>
+<li>Salve o arquivo. Não é preciso mexer na Home se o link continuar o mesmo.</li>
+</ol>
+</section>
+<section id="visualizar-o-blog-localmente" class="level2">
+<h2 class="anchored" data-anchor-id="visualizar-o-blog-localmente">5. Visualizar o Blog Localmente</h2>
+<ol type="1">
+<li>Abra o PowerShell.</li>
+<li>Vá para a pasta do projeto:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">"c:\Users\Users\Documents\Projetos\blogQuartoDev"</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Inicie a pré-visualização do Quarto:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>quarto preview</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
+<li>O navegador abrirá o site. Ao salvar qualquer <code>.qmd</code> ou <code>styles.css</code>, a página recarrega automaticamente.</li>
+<li>Para encerrar a pré-visualização, use <code>Ctrl + C</code> no terminal.</li>
+</ol>
+</section>
+<section id="publicar-as-alterações-no-github" class="level2">
+<h2 class="anchored" data-anchor-id="publicar-as-alterações-no-github">6. Publicar as Alterações no GitHub</h2>
+<ol type="1">
+<li>Na pasta do projeto, execute:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cd</span> <span class="st">"c:\Users\Users\Documents\Projetos\blogQuartoDev"</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" type="1">
+<li>Adicione os arquivos modificados:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>git add <span class="op">.</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li>Crie um commit com mensagem descritiva:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>git commit <span class="op">-</span>m <span class="st">"Adiciona novo post sobre [tema]"</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="4" type="1">
+<li>Envie para o GitHub:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>git push</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="5" type="1">
+<li>Aguarde o GitHub Pages atualizar e acesse a URL do site.</li>
+</ol>
+</section>
+<section id="ajustar-apenas-o-visual-cores-e-layout" class="level2">
+<h2 class="anchored" data-anchor-id="ajustar-apenas-o-visual-cores-e-layout">7. Ajustar Apenas o Visual (Cores e Layout)</h2>
+<ul>
+<li>Todas as personalizações visuais estão em <code>styles.css</code>.</li>
+<li>Exemplos:
+<ul>
+<li><strong>Cores principais</strong>: variáveis em <code>:root</code> (como <code>--color-primary</code>, <code>--color-secondary-bg</code>).</li>
+<li><strong>Navbar</strong>: regras <code>.navbar</code>.</li>
+<li><strong>Cards da Home</strong>: <code>.posts-grid</code> e <code>.post-card</code>.</li>
+<li><strong>Blocos de código</strong>: <code>pre</code> e <code>pre code</code>.</li>
+</ul></li>
+<li>Após mudar <code>styles.css</code>, use <code>quarto preview</code> para conferir o resultado.</li>
+</ul>
+</section>
+<section id="boas-práticas" class="level2">
+<h2 class="anchored" data-anchor-id="boas-práticas">8. Boas Práticas</h2>
+<ul>
+<li>Use nomes de arquivos consistentes, como:
+<ul>
+<li><code>post-01-condicionais.qmd</code></li>
+<li><code>post-02-lacos-repeticao.qmd</code></li>
+</ul></li>
+<li>Mantenha o cabeçalho YAML sempre correto.</li>
+<li>Sempre preencha a seção “Comentários do Autor”.</li>
+<li>Teste o código antes de publicar.</li>
+<li>Escreva mensagens de commit claras (ex.: <code>Cria post sobre listas em Python</code>).</li>
+</ul>
+<hr>
+<p>Se tiver dúvidas, consulte este manual ou veja exemplos já existentes em <code>posts/post-01.qmd</code> e <code>posts/post-02.qmd</code>.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
